@@ -38,6 +38,14 @@ func main() {
 			if err := db.Create(&event).Error; err != nil {
 				log.Fatalf("failed to create event: %v", err)
 			}
+			categoriesBody, err := web.GetCategories(client, event.ID)
+			if err != nil {
+				panic(err)
+			}
+			if err = db2.SaveCategoriesForEvent(db, event.ID, categoriesBody); err != nil {
+				panic(err)
+			}
+
 		}
 		url = response.Next
 		log.Printf("requests processed: %d\n", i)

@@ -16,7 +16,7 @@ type ApiResponse struct {
 
 type Event struct {
 	gorm.Model
-	ID             int    `json:"id"`
+	ID             uint   `json:"id"`
 	Title          string `json:"title"`
 	Place          *Place `json:"place" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	PlaceID        *uint
@@ -26,6 +26,19 @@ type Event struct {
 	IsFree         bool          `json:"is_free"`
 	Dates          []DateRange   `json:"dates" gorm:"foreignKey:EventID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Participants   []Participant `json:"participants" gorm:"foreignKey:EventID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Categories     []Category    `json:"-" gorm:"foreignKey:EventID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+}
+
+// Структура для хранения ответа по категориям
+type RawCategories struct {
+	Categories []string `json:"categories"`
+}
+
+// Новая модель для категорий
+type Category struct {
+	gorm.Model
+	EventID uint   `json:"event_id"`             // Внешний ключ на Event
+	Name    string `json:"name" gorm:"not null"` // Название категории
 }
 
 type DateRange struct {
@@ -34,6 +47,7 @@ type DateRange struct {
 	Start   int64 `json:"start"`
 	End     int64 `json:"end"`
 }
+
 type Place struct {
 	gorm.Model
 	ID        int     `json:"id"`

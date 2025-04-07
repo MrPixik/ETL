@@ -7,7 +7,7 @@ import (
 )
 
 func AutoMigrate(db *gorm.DB) error {
-	err := db.AutoMigrate(&models.Event{}, &models.Place{}, &models.DateRange{}, &models.Participant{})
+	err := db.AutoMigrate(&models.Event{}, &models.Place{}, &models.DateRange{}, &models.Participant{}, &models.Category{})
 	if err != nil {
 		log.Fatal("migration failed:", err)
 		return err
